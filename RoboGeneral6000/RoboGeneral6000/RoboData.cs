@@ -54,12 +54,12 @@ public class MainCore
     {
         string result = "";
 
-        result += "    OWNER" + owner.ToString() + "\n";
-        result += "    X" + x.ToString() + "\n";
-        result += "    Y" + y.ToString() + "\n";
-        result += "    MAXHP" + maxhp.ToString() + "\n";
-        result += "    HP" + hp.ToString() + "\n";
-        result += "    ENUM" + @enum.ToString() + "\n";
+        result += "    OWNER " + owner.ToString() + "\n";
+        result += "    X " + x.ToString() + "\n";
+        result += "    Y " + y.ToString() + "\n";
+        result += "    MAXHP " + maxhp.ToString() + "\n";
+        result += "    HP " + hp.ToString() + "\n";
+        result += "    ENUM " + @enum.ToString() + "\n";
 
         return result;
     }
@@ -92,16 +92,16 @@ public class Player
 
         for(int itr = 0; itr<towers.Count; itr++)
         {
-            result += "  " + towers[itr] + "\n";
+            result += "      " + towers[itr] + "\n";
         }
 
         for(int troop = 0; troop<troops.Count; troop++)
         {
-            result += "  " + troops[troop].PrintData() + "\n";
+            result += troops[troop].PrintData() + "\n";
         }
 
 
-        result += "  MAINCORE: " + mainCore.PrintData() + "\n";
+        result += "  MAINCORE: \n" + mainCore.PrintData() + "\n";
 
         return result;
     }
@@ -117,7 +117,7 @@ public class RoboData
     public string PrintData()
     {
         string result;
-        result = "WIDTH: " + w.ToString() + "\n HEIGHT: " + h.ToString() + "\n";
+        result = "WIDTH: " + w.ToString() + "\nHEIGHT: " + h.ToString() + "\n";
         result += "P1: \n" + p1.PrintData();
         result += "P2: \n" + p2.PrintData();
         return result;

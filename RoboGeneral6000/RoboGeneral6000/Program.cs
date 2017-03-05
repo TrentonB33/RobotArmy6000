@@ -15,65 +15,85 @@ namespace RoboGeneral6000
 {
     class RoboSystem
     {
+        public static RoboData currentState;
         static void Main(string[] args)
         {
-            
-            String url = "ws://npcompete.io/wsjoin?game=PenTest";
-            String devkey = "AustinsLoudlyMagnificentRamen";
-
-            String gameState;
-
-            FileStream output = File.Create("testText.txt");
-
-            RoboData currentState;
-
-            int counter = 0;
-            int maxLines = 100;
-            
-            /*****************************************************************
-            //TODO: Go and look at the json to csharp website and also get the
-            //Game to send me more inormation on units and towers so i can make a better
-            //json file to give it
-            /****************************************************************/
-
-            var socket = new WebSocket(url);
-
-            socket.OnMessage += (sender, e) =>
+            try
             {
-                gameState = e.Data;
-                ITraceWriter traceWriter = new MemoryTraceWriter();
-                try
-                {
-                    Debug.WriteLine("STATE " + counter +": " + gameState);
-                    currentState = JsonConvert.DeserializeObject<RoboData>(gameState);
-                    Debug.WriteLine("DATA" + currentState.p2.mainCore.owner);
 
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.Message);
-                    Debug.WriteLine("TRACE"+traceWriter+"\n");
-                }
-                finally
-                {
+                String url = "ws://npcompete.io/wsjoin?game=PenTest";
+                String devkey = "AustinsLoudlyMagnificentRamen";
 
-                    if (counter++ > maxLines)
+                String gameState;
+
+                FileStream output = File.Create("testText.txt");
+
+                int counter = 0;
+                //int maxLines = 100;
+            
+                var socket = new WebSocket(url);
+
+                /************************************************************************
+                 * Event handler for listening for a message
+                 * *********************************************************************/
+                socket.OnMessage += (sender, e) =>
+                {
+                    gameState = e.Data;
+                    try
                     {
-                        Environment.Exit(0);
+                        //Debug.WriteLine("STATE " + counter + ": " + gameState);
+                        currentState = JsonConvert.DeserializeObject<RoboData>(gameState);
+                        if (currentState != null)
+                        {
+
+                            if (counter % 30 == 0)
+                            {
+                                Debug.WriteLine("CURSTATE: \n" + currentState.PrintData());
+                            }
+
+                        }
+
                     }
-                }
-            };
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.Data);
+                        Debug.WriteLine(ex.Message);
+                    }
+                    /*finally
+                    {
 
-            socket.Connect();
-            socket.Send(devkey);
+                        if (counter++ > maxLines)
+                        {
+                            Environment.Exit(0);
+                        }
+                    }*/
 
-            Console.ReadLine();
 
-            //output.Write(Encoding.ASCII.GetBytes(gameState), 0, Encoding.ASCII.GetByteCount(gameState));
+                    MakeDecision();
+                        
+                };
 
-            output.Close();
 
-            socket.Close();
+                //The actual running of the code
+
+                socket.Connect();
+                socket.Send(devkey);
+
+                Console.ReadLine();
+
+                output.Close();
+
+                socket.Close();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("DEBUG: " + e.Message);
+            }
+        }
+
+        static void MakeDecision()
+        {
+
         }
     }
 }
