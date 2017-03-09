@@ -90,12 +90,14 @@ public class Player
         result += "  TERRITORY_MIN: " + territoryMin.ToString() + "\n";
         result += "  TERRITORY_MAX: " + territoryMax.ToString() + "\n";
 
+        result += "\n  TOWERS:\n";
         for(int itr = 0; itr<towers.Count; itr++)
         {
-            result += "      " + towers[itr] + "\n";
+            result += towers[itr].PrintData() + "\n"; ;
         }
 
-        for(int troop = 0; troop<troops.Count; troop++)
+        result += "\n  UNITS:\n";
+        for (int troop = 0; troop<troops.Count; troop++)
         {
             result += troops[troop].PrintData() + "\n";
         }
