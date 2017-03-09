@@ -74,7 +74,7 @@ public class Player
     public int horizonMax { get; set; }
     public int territoryMin { get; set; }
     public int territoryMax { get; set; }
-    public List<string> towers { get; set; }
+    public List<Unit> towers { get; set; }
     public List<Unit> troops { get; set; }
     public MainCore mainCore { get; set; }
 

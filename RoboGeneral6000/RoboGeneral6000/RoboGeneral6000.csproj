@@ -53,6 +53,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoboData.cs" />
+    <Compile Include="RoboMash.cs" />
     <Compile Include="RoboMind.cs" />
   </ItemGroup>
   <ItemGroup>

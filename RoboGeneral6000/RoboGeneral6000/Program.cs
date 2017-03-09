@@ -15,7 +15,11 @@ namespace RoboGeneral6000
 {
     class RoboSystem
     {
+        private static readonly object syncLock = new object();
+        private static bool deciding = false;
         public static RoboData currentState;
+        private static int counter = 0;
+
         static void Main(string[] args)
         {
             try
@@ -24,11 +28,8 @@ namespace RoboGeneral6000
                 String url = "ws://npcompete.io/wsjoin?game=PenTest";
                 String devkey = "AustinsLoudlyMagnificentRamen";
 
-                String gameState;
-
                 FileStream output = File.Create("testText.txt");
 
-                int counter = 0;
                 //int maxLines = 100;
             
                 var socket = new WebSocket(url);
@@ -38,39 +39,7 @@ namespace RoboGeneral6000
                  * *********************************************************************/
                 socket.OnMessage += (sender, e) =>
                 {
-                    gameState = e.Data;
-                    try
-                    {
-                        //Debug.WriteLine("STATE " + counter + ": " + gameState);
-                        currentState = JsonConvert.DeserializeObject<RoboData>(gameState);
-                        if (currentState != null)
-                        {
-
-                            if (counter % 30 == 0)
-                            {
-                                Debug.WriteLine("CURSTATE: \n" + currentState.PrintData());
-                            }
-
-                        }
-
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.WriteLine(ex.Data);
-                        Debug.WriteLine(ex.Message);
-                    }
-                    /*finally
-                    {
-
-                        if (counter++ > maxLines)
-                        {
-                            Environment.Exit(0);
-                        }
-                    }*/
-
-
-                    MakeDecision();
-                        
+                    onMessage(e);
                 };
 
 
@@ -85,9 +54,58 @@ namespace RoboGeneral6000
 
                 socket.Close();
             }
+
             catch (Exception e)
             {
                 Debug.WriteLine("DEBUG: " + e.Message);
+            }
+        }
+
+        static void onMessage(MessageEventArgs e)
+        {
+            String gameState;
+
+            lock (syncLock)
+            {
+                if (deciding)
+                {
+                    return;
+                }
+
+                deciding = true;
+            }
+            gameState = e.Data;
+            try
+            {
+                Debug.WriteLine("STATE " + counter + ": " + gameState);
+                currentState = JsonConvert.DeserializeObject<RoboData>(gameState);
+                if (currentState != null)
+                {
+
+                    if (counter % 30 == 0)
+                    {
+                        Debug.WriteLine("CURSTATE: \n" + currentState.PrintData());
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Data);
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+
+                counter++;
+            }
+
+
+            MakeDecision();
+
+            lock (syncLock)
+            {
+
+                deciding = false;
             }
         }
 
@@ -95,5 +113,9 @@ namespace RoboGeneral6000
         {
 
         }
+
+
+
+
     }
 }
