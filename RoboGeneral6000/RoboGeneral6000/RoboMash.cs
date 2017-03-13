@@ -23,18 +23,20 @@ namespace RoboGeneral6000
     {
         //The is the publically available function to take a population
         //Of members and create the next generation
-        public static List<object> Mash(List<object> population)
+        public static List<NeuralNet> Mash(List<NeuralNet> population)
         {
-            List<object> newPop;
+            List<NeuralNet> newPop;
             newPop = KillHalf(population);
 
 
             return newPop;
         }
 
-        private static List<object> KillHalf(List<object> oldPop)
+        private static List<NeuralNet> KillHalf(List<NeuralNet> oldPop)
         {
-            List<object> survivors = new List<object>();
+            List<NeuralNet> survivors = new List<NeuralNet>();
+
+
 
             return survivors;
         }
