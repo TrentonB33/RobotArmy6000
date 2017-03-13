@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RoboGeneral6000.NeuralNet
+namespace RoboGeneral6000._NeuralNet.Layers
 {
     abstract class AbsLayer
     {

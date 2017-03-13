@@ -50,9 +50,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NeuralNet\NeuralNet.cs" />
-    <Compile Include="NeuralNet\Layers\AbsLayer.cs" />
-    <Compile Include="NeuralNet\Layers\OutputLayer.cs" />
+    <Compile Include="_NeuralNet\NeuralNet.cs" />
+    <Compile Include="_NeuralNet\Layers\AbsLayer.cs" />
+    <Compile Include="_NeuralNet\Layers\OutputLayer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoboData.cs" />
