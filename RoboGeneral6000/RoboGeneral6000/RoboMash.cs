@@ -36,6 +36,10 @@ namespace RoboGeneral6000
         {
             List<NeuralNet> survivors = new List<NeuralNet>();
 
+            Random randGen = new Random((int)DateTime.Now.Ticks);
+            
+            int maxVal = oldPop.Count * 2;
+
 
 
             return survivors;
