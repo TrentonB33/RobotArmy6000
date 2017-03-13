@@ -19,15 +19,26 @@ using System.Threading.Tasks;
 
 namespace RoboGeneral6000
 {
-    class RoboMash
+    static class RoboMash
     {
-        /****************************************
-         * This will be the contructor to 
-         * 
-         * *************************************/
-        public RoboMash(List<object> members)
+        //The is the publically available function to take a population
+        //Of members and create the next generation
+        public static List<NeuralNet> Mash(List<NeuralNet> population)
         {
+            List<NeuralNet> newPop;
+            newPop = KillHalf(population);
 
+
+            return newPop;
+        }
+
+        private static List<NeuralNet> KillHalf(List<NeuralNet> oldPop)
+        {
+            List<NeuralNet> survivors = new List<NeuralNet>();
+
+
+
+            return survivors;
         }
 
     }
