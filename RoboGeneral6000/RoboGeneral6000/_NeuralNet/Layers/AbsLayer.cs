@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace RoboGeneral6000._NeuralNet.Layers
 {
-    abstract class AbsLayer
+    public abstract class AbsLayer
     {
         protected double[] values;
-        protected double[][] weights;
-        protected int valCount;
+        public double[][] weights;
+        public int valCount;
 
         protected AbsLayer NextLayer;
 
