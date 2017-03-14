@@ -34,6 +34,8 @@ namespace RoboGeneral6000
             
                 var socket = new WebSocket(url);
 
+                
+
                 /************************************************************************
                  * Event handler for listening for a message
                  * *********************************************************************/
