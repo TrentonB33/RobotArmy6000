@@ -34,18 +34,60 @@ namespace RoboGeneral6000
             return newPop;
         }
 
+
+        //I expect oldPop to be sorted from least fit to Most fit
         private static List<NeuralNet> KillHalf(List<NeuralNet> oldPop)
         {
             List<NeuralNet> survivors = new List<NeuralNet>();
+            List<int> indexesSaved = new List<int>();
 
             Random randGen = new Random((int)DateTime.Now.Ticks);
-            
+
+            int numToSave = oldPop.Count / 2;
             int maxVal = oldPop.Count * 2;
+            int saved = 0;
 
+            int mem = 0;
 
+            while (saved < numToSave)
+            {
+                if (mem + randGen.Next(0, oldPop.Count) > oldPop.Count)
+                {
+                    if (!indexesSaved.Exists(x => x == mem))
+                    {
+                        survivors.Add(oldPop[mem]);
+                        indexesSaved.Add(mem);
+                        mem++;
+                        saved++;
+                        if (mem == oldPop.Count)
+                        {
+                            mem = 0;
+                        }
+                    }
+                }
+            }
 
             return survivors;
         }
 
+        //For debugging
+        public static List<NeuralNet> GenNeural()
+        {
+            List<NeuralNet> sample = new List<NeuralNet>();
+
+            int num = 100;
+
+            for(int i = 0; i < num; i++)
+            {
+                sample.Add(new NeuralNet());
+                sample[i].fitness = i;
+            }
+
+            return sample;
+
+        }
+
     }
+
+    
 }

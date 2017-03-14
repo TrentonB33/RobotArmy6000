@@ -5,7 +5,7 @@ namespace RoboGeneral6000._NeuralNet
 {
     public class NeuralNet
     {
-        private int fitness;
+        public int fitness;
 
         public NeuralNet()
         {

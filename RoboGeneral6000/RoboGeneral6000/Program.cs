@@ -42,8 +42,14 @@ namespace RoboGeneral6000
                     onMessage(e);
                 };
 
-
                 //The actual running of the code
+
+                List<_NeuralNet.NeuralNet> result = RoboMash.Mash(RoboMash.GenNeural());
+                Debug.WriteLine(result.Count.ToString());
+                for(int i = 0; i < result.Count; i++)
+                {
+                    Debug.Write(result[i].fitness.ToString() + " ");
+                }
 
                 socket.Connect();
                 socket.Send(devkey);
