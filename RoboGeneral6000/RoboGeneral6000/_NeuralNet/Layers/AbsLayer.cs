@@ -11,28 +11,10 @@ namespace RoboGeneral6000._NeuralNet.Layers
         protected double[] values;
         public double[][] weights;
         public int valCount;
+        public double act;
 
         protected AbsLayer NextLayer;
 
-        public AbsLayer()
-        {
-            valCount = 10;
-            weights = new double[valCount][];
-            for (int x = 0; x < valCount; x++)
-            {
-                weights[x] = new double[valCount];
-            }
-        }
-
-        public AbsLayer(int _size)
-        {
-            valCount = _size;
-            weights = new double[valCount][];
-            for (int x = 0; x < valCount;x++)
-            {
-                weights[x] = new double[valCount];
-            }
-        }
 
         public virtual void ProcessLayer(double[] _input)
         {

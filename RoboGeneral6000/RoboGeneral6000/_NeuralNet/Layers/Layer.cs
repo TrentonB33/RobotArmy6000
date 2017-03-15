@@ -10,6 +10,7 @@ namespace RoboGeneral6000._NeuralNet.Layers
     {
         public Layer()
         {
+            act = 0.75;
             valCount = 10;
             weights = new double[valCount][];
             for (int x = 0; x < valCount; x++)
@@ -22,8 +23,9 @@ namespace RoboGeneral6000._NeuralNet.Layers
             }
         }
 
-        public Layer(Random _gen)
+        public Layer(Random _gen, double _act)
         {
+            act = _act;
             valCount = 10;
             weights = new double[valCount][];
             for (int x = 0; x < valCount; x++)
@@ -36,8 +38,9 @@ namespace RoboGeneral6000._NeuralNet.Layers
             }
         }
 
-        public Layer(int _size, Random _gen)
+        public Layer(int _size, Random _gen, double _act)
         {
+            act = _act;
             valCount = _size;
             weights = new double[valCount][];
             for (int x = 0; x < valCount; x++)

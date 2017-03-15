@@ -11,7 +11,7 @@ namespace RoboGeneral6000._NeuralNet.Layers
         // private double[] values;
 
         public OutputLayer()
-        {
+        { 
             valCount = 3;
             weights = new double[valCount][];
             for (int x = 0; x < valCount; x++)
