@@ -101,8 +101,8 @@ namespace RoboGeneral6000
 
             List<double> board = GenBoard(toReproduce);
 
-            //Random randGen = new Random((int)DateTime.Now.Ticks);
-            Random randGen = new Random(100);
+            Random randGen = new Random((int)DateTime.Now.Ticks);
+            //Random randGen = new Random(100);
             int numRuns = toReproduce.Count;
             double firstRand = 0;
             double secondRand = 0;

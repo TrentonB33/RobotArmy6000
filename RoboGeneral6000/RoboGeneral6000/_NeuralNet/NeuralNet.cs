@@ -32,7 +32,7 @@ namespace RoboGeneral6000._NeuralNet
                 }
             }
 
-            inputLayer = new Layer(inSize, gen, act);
+            inputLayer = new Layer(inSize, hidSize, gen, act);
             outputLayer = new OutputLayer(outSize);
         }
 
@@ -74,7 +74,7 @@ namespace RoboGeneral6000._NeuralNet
                     hidLayers[x - 1].NextLayer = hidLayers[x];
                 }
             }
-            inputLayer = new Layer(inSize, gen, act);
+            inputLayer = new Layer(inSize, hidSize, gen, act);
             outputLayer = new OutputLayer(outSize);
         }
 
@@ -98,8 +98,8 @@ namespace RoboGeneral6000._NeuralNet
             {
                 int next = pos - inSize * hidSize;
                 int layer = next / (hidSize*hidSize);
-                int weights = next - layer * hidSize;
-                hidLayers[layer].weights[next / hidSize][next % hidSize] = newVal;
+                int weight = next - layer * hidSize*hidSize;
+                hidLayers[layer].weights[weight / hidSize][weight % hidSize] = newVal;
             }
 
         }
@@ -115,8 +115,8 @@ namespace RoboGeneral6000._NeuralNet
             {
                 int next = pos - inSize * hidSize;
                 int layer = next / (hidSize * hidSize);
-                int weights = next - layer * hidSize;
-                return hidLayers[layer].weights[next / hidSize][next % hidSize];
+                int weight = next - layer * hidSize*hidSize;
+                return hidLayers[layer].weights[weight / hidSize][weight % hidSize];
             }
 
         }
