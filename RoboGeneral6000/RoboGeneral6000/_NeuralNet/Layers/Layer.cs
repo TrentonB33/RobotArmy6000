@@ -69,5 +69,21 @@ namespace RoboGeneral6000._NeuralNet.Layers
                 }
             }
         }
+
+        public Layer(int _size, int hidSize, Random _gen, double _act)
+        {
+            act = _act;
+            valCount = _size;
+            values = new double[valCount];
+            weights = new double[valCount][];
+            for (int x = 0; x < valCount; x++)
+            {
+                weights[x] = new double[hidSize];
+                for (int y = 0; y < hidSize; y++)
+                {
+                    weights[x][y] = _gen.NextDouble();
+                }
+            }
+        }
     }
 }
