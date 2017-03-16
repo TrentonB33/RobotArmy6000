@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace RoboGeneral6000._NeuralNet.Layers
 {
@@ -41,6 +42,20 @@ namespace RoboGeneral6000._NeuralNet.Layers
                 }
             }
             return output;
+        }
+
+        public void PrintEdgeLayer()
+        {
+            string result = "Edges:\n";
+            for (int row = 0; row < valCount; row++)
+            {
+                for (int col = 0; col < valCount; col++)
+                {
+                    result += " " + weights[row][col];
+                }
+                result += "\n";
+            }
+            Debug.WriteLine(result);
         }
 
     }

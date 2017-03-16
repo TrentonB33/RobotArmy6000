@@ -34,6 +34,8 @@ namespace RoboGeneral6000
             
                 var socket = new WebSocket(url);
 
+                Debug.WriteLine("Hello world!");
+
                 
 
                 /************************************************************************
