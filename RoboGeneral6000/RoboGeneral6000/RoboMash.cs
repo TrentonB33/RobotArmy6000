@@ -101,7 +101,8 @@ namespace RoboGeneral6000
 
             List<double> board = GenBoard(toReproduce);
 
-            Random randGen = new Random((int)DateTime.Now.Ticks);
+            //Random randGen = new Random((int)DateTime.Now.Ticks);
+            Random randGen = new Random(100);
             int numRuns = toReproduce.Count;
             double firstRand = 0;
             double secondRand = 0;
@@ -112,6 +113,7 @@ namespace RoboGeneral6000
             //First, select two members and recombine the member genes if needed
             for (int round = 0; round < numRuns; round++)
             {
+                //Debug.WriteLine()
                 first = null;
                 second = null;
                 firstRand = randGen.NextDouble();
