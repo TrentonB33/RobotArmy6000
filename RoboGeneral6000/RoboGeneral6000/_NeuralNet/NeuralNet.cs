@@ -45,7 +45,7 @@ namespace RoboGeneral6000._NeuralNet
             gen = _orig.gen;
             act = _orig.act;
             inputLayer = new Layer((Layer)_orig.inputLayer);
-            outputLayer = new OutputLayer((OutputLayer)_orig.inputLayer);
+            outputLayer = new OutputLayer((OutputLayer)_orig.outputLayer);
             hidLayers = new AbsLayer[hidCount];
             for(int x=0;x<hidCount;x++)
             {

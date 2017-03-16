@@ -14,6 +14,7 @@ namespace RoboGeneral6000._NeuralNet.Layers
         { 
             valCount = 3;
             weights = new double[valCount][];
+            values = new double[valCount];
             for (int x = 0; x < valCount; x++)
             {
                 weights[x] = new double[valCount];
@@ -34,6 +35,7 @@ namespace RoboGeneral6000._NeuralNet.Layers
         {
             valCount = _size;
             weights = new double[valCount][];
+            values = new double[valCount];
             for (int x = 0; x < valCount; x++)
             {
                 weights[x] = new double[valCount];
