@@ -1,5 +1,6 @@
 ﻿using System;
 using RoboGeneral6000._NeuralNet.Layers;
+using System.Diagnostics;
 
 namespace RoboGeneral6000._NeuralNet
 {
@@ -15,7 +16,7 @@ namespace RoboGeneral6000._NeuralNet
         public AbsLayer outputLayer;
         public int outSize = 3;
         private Random gen;
-        private double act = 0.75;
+        private double act = 0.75; //Activation threshold
 
         public NeuralNet()
         {
@@ -85,6 +86,7 @@ namespace RoboGeneral6000._NeuralNet
 
         }
 
+
         public double getEdge(int pos)
         {
             if (pos < inSize * hidSize)
@@ -97,6 +99,17 @@ namespace RoboGeneral6000._NeuralNet
                 int layer = next / (hidSize * hidSize);
                 int weights = next - layer * hidSize;
                 return hidLayers[layer].weights[next / hidSize][next % hidSize];
+            }
+
+        }
+
+        public void PrintNet()
+        {
+            //string result = null;
+            for (int layer = 0; layer < hidCount; layer++)
+            {
+                Debug.WriteLine("Layer " + layer.ToString());
+                hidLayers[layer].PrintEdgeLayer();
             }
 
         }
