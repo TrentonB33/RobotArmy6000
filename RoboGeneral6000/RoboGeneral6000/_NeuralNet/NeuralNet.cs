@@ -15,12 +15,11 @@ namespace RoboGeneral6000._NeuralNet
         public int inSize =  40;
         public AbsLayer outputLayer;
         public int outSize = 3;
-        private Random gen;
+        private static Random gen = new Random();
         private double act = 0.75; //Activation threshold
 
         public NeuralNet()
         {
-            gen = new Random();
             hidCount = 5;
             hidLayers = new AbsLayer[hidCount];
             for (int x = 0; x < hidCount; x++)
@@ -38,11 +37,11 @@ namespace RoboGeneral6000._NeuralNet
 
         public NeuralNet(NeuralNet _orig)
         {
+            fitness = _orig.fitness;
             hidCount = _orig.hidCount;
             hidSize = _orig.hidSize;
             inSize = _orig.inSize;
             outSize = _orig.outSize;
-            gen = _orig.gen;
             act = _orig.act;
             inputLayer = new Layer((Layer)_orig.inputLayer);
             outputLayer = new OutputLayer((OutputLayer)_orig.outputLayer);
@@ -61,7 +60,6 @@ namespace RoboGeneral6000._NeuralNet
         {
             act = _act;
             hidSize = _hidSize;
-            gen = new Random();
             hidCount = _hidCount;
             outSize = _outSize;
             inSize = _inSize;
@@ -124,10 +122,12 @@ namespace RoboGeneral6000._NeuralNet
         public void PrintNet()
         {
             //string result = null;
+            Debug.WriteLine("Input Layer");
+            inputLayer.PrintEdgeLayer(3, 5);
             for (int layer = 0; layer < hidCount; layer++)
             {
                 Debug.WriteLine("Layer " + layer.ToString());
-                hidLayers[layer].PrintEdgeLayer();
+                hidLayers[layer].PrintEdgeLayer(hidSize, hidSize);
             }
 
         }

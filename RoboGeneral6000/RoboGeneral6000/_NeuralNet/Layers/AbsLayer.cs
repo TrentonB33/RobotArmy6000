@@ -44,12 +44,12 @@ namespace RoboGeneral6000._NeuralNet.Layers
             return output;
         }
 
-        public void PrintEdgeLayer()
+        public void PrintEdgeLayer(int r, int c)
         {
             string result = "Edges:\n";
-            for (int row = 0; row < valCount; row++)
+            for (int row = 0; row < r; row++)
             {
-                for (int col = 0; col < valCount; col++)
+                for (int col = 0; col < c; col++)
                 {
                     result += " " + weights[row][col];
                 }

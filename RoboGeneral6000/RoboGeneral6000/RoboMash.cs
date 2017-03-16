@@ -99,6 +99,8 @@ namespace RoboGeneral6000
             NeuralNet first = null;
             NeuralNet second = null;
 
+            PrintPop(toReproduce);
+
             List<double> board = GenBoard(toReproduce);
 
             int seed = (int)DateTime.Now.Ticks;
@@ -122,36 +124,34 @@ namespace RoboGeneral6000
                 secondRand = randGen.NextDouble();
 
                 Debug.WriteLine("Rooouuunnnndddd: " + round.ToString());
+                Debug.WriteLine("Random Numbers: " + firstRand + " " + secondRand);
                 
 
-                for (int itr = 0; itr < board.Count; itr++)
+                for (int itr = 0; itr < toReproduce.Count; itr++)
                 {
-                    Debug.WriteLine("Iteration: " + itr.ToString());
                     
                     if (board[itr] < firstRand && firstRand < board[itr + 1])
                     {
                         first = toReproduce[itr];
+                        Debug.WriteLine("First Parent: " + itr.ToString());
                     }
                     if(board[itr] < secondRand && secondRand < board[itr + 1])
                     {
                         second = toReproduce[itr];
+                        Debug.WriteLine("Second Parent: " + itr.ToString());
                     }
-                    Debug.WriteLine("Do I make it here?");
                     if(first != null && second != null)
                     {
                         break;
                     }
-                    Debug.WriteLine("How about here?");
                 }
                 
                 if (randGen.NextDouble() < recombineProbability)
                 {
-                    Debug.WriteLine("Entering reproduce");
                     RecombineMembers(first, second, newPop, randGen);
                 }
                 else
                 {
-                    Debug.WriteLine("Adding memebers after no recombo");
                     newPop.Add(new NeuralNet(first));
                     newPop.Add(new NeuralNet(second));
                 }
@@ -163,7 +163,6 @@ namespace RoboGeneral6000
 
         private static void RecombineMembers(NeuralNet first, NeuralNet second, List<NeuralNet> newPop, Random randGen)
         {
-            Debug.WriteLine("In the butt");
             NeuralNet clone1 = new NeuralNet(first);
             NeuralNet clone2 = new NeuralNet(second);
 
@@ -221,6 +220,15 @@ namespace RoboGeneral6000
             Debug.WriteLine(board.Count.ToString());
 
             return board;
+        }
+
+        public static void PrintPop(List<NeuralNet> pop)
+        {
+            for(int i = 0; i < pop.Count; i++)
+            {
+                Debug.WriteLine("Neural net: " + i.ToString());
+                pop[i].PrintNet();
+            }
         }
 
 
