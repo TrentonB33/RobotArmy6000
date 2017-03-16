@@ -93,7 +93,7 @@ namespace RoboGeneral6000._NeuralNet
         {
             if(pos<inSize*hidSize)
             {
-                inputLayer.weights[pos / inSize][pos % inSize] = newVal;
+                inputLayer.weights[pos / hidSize][pos % hidSize] = newVal;
             } else
             {
                 int next = pos - inSize * hidSize;
@@ -109,7 +109,7 @@ namespace RoboGeneral6000._NeuralNet
         {
             if (pos < inSize * hidSize)
             {
-                return inputLayer.weights[pos / inSize][pos % inSize];
+                return inputLayer.weights[pos / hidSize][pos % hidSize];
             }
             else
             {
