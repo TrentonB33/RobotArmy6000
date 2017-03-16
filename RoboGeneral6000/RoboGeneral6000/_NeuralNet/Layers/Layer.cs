@@ -23,6 +23,19 @@ namespace RoboGeneral6000._NeuralNet.Layers
             }
         }
 
+        public Layer(Layer _orig)
+        {
+            values = (double[])_orig.values.Clone();
+            weights = (double[][])_orig.weights.Clone();
+            for(int x = 0; x<weights.Length;x++)
+            {
+                weights[x] = (double[])_orig.weights[x].Clone();
+            }
+            valCount = _orig.valCount;
+            act = _orig.act;
+
+        }
+
         public Layer(Random _gen, double _act)
         {
             act = _act;

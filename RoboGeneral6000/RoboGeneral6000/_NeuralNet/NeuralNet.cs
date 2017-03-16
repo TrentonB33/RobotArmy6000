@@ -31,6 +31,23 @@ namespace RoboGeneral6000._NeuralNet
             outputLayer = new OutputLayer(outSize);
         }
 
+        public NeuralNet(NeuralNet _orig)
+        {
+            hidCount = _orig.hidCount;
+            hidSize = _orig.hidSize;
+            inSize = _orig.inSize;
+            outSize = _orig.outSize;
+            gen = _orig.gen;
+            act = _orig.act;
+            inputLayer = new Layer((Layer)_orig.inputLayer);
+            outputLayer = new OutputLayer((OutputLayer)_orig.inputLayer);
+            hidLayers = new AbsLayer[hidCount];
+            for(int x=0;x<hidCount;x++)
+            {
+                hidLayers[x] = new Layer((Layer)_orig.hidLayers[x]);
+            }
+        }
+
         public NeuralNet(int _hidCount, int _hidSize, int _inSize, int _outSize, double _act)
         {
             act = _act;
@@ -64,6 +81,22 @@ namespace RoboGeneral6000._NeuralNet
                 int layer = next / (hidSize*hidSize);
                 int weights = next - layer * hidSize;
                 hidLayers[layer].weights[next / hidSize][next % hidSize] = newVal;
+            }
+
+        }
+
+        public double getEdge(int pos)
+        {
+            if (pos < inSize * hidSize)
+            {
+                return inputLayer.weights[pos / inSize][pos % inSize];
+            }
+            else
+            {
+                int next = pos - inSize * hidSize;
+                int layer = next / (hidSize * hidSize);
+                int weights = next - layer * hidSize;
+                return hidLayers[layer].weights[next / hidSize][next % hidSize];
             }
 
         }
