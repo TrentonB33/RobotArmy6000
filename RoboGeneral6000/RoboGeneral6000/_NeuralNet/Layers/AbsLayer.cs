@@ -14,7 +14,7 @@ namespace RoboGeneral6000._NeuralNet.Layers
         public int valCount;
         public double act;
 
-        protected AbsLayer NextLayer;
+        public AbsLayer NextLayer;
 
 
         public virtual void ProcessLayer(double[] _input)

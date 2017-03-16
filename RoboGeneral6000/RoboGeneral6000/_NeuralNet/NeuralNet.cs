@@ -26,6 +26,10 @@ namespace RoboGeneral6000._NeuralNet
             for (int x = 0; x < hidCount; x++)
             {
                 hidLayers[x] = new Layer(gen, act);
+                if(x>0)
+                {
+                    hidLayers[x - 1].NextLayer = hidLayers[x];
+                }
             }
 
             inputLayer = new Layer(inSize, gen, act);
@@ -46,6 +50,10 @@ namespace RoboGeneral6000._NeuralNet
             for(int x=0;x<hidCount;x++)
             {
                 hidLayers[x] = new Layer((Layer)_orig.hidLayers[x]);
+                if (x > 0)
+                {
+                    hidLayers[x - 1].NextLayer = hidLayers[x];
+                }
             }
         }
 
@@ -61,9 +69,19 @@ namespace RoboGeneral6000._NeuralNet
             for(int x=0; x<hidCount;x++)
             {
                 hidLayers[x] = new Layer(_hidSize, gen, act);
+                if (x > 0)
+                {
+                    hidLayers[x - 1].NextLayer = hidLayers[x];
+                }
             }
             inputLayer = new Layer(inSize, gen, act);
             outputLayer = new OutputLayer(outSize);
+        }
+
+        public double[] ProcessInput(double[] _input)
+        {
+            inputLayer.ProcessLayer(_input);
+            return ((OutputLayer)outputLayer).GetValues();
         }
 
         public int EdgeCount()

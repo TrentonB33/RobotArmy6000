@@ -24,10 +24,7 @@ namespace RoboGeneral6000._NeuralNet.Layers
         {
             values = (double[])_orig.values.Clone();
             weights = (double[][])_orig.weights.Clone();
-            for (int x = 0; x < weights.Length; x++)
-            {
-                weights[x] = (double[])_orig.weights[x].Clone();
-            }
+            
             valCount = _orig.valCount;
             act = _orig.act;
 
@@ -46,6 +43,11 @@ namespace RoboGeneral6000._NeuralNet.Layers
         override public void ProcessLayer(double[] _input)
         {
             values = _input;
+        }
+
+        public double[] GetValues()
+        {
+            return values;
         }
     }
 }
