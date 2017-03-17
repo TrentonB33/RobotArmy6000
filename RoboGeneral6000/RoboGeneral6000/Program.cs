@@ -7,6 +7,7 @@ using WebSocketSharp;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Diagnostics;
+using RoboGeneral6000._NeuralNet;
 
 //The websocket I'm using is from the following source:
 //https://github.com/sta/websocket-sharp
@@ -15,114 +16,71 @@ namespace RoboGeneral6000
 {
     class RoboSystem
     {
-        private static readonly object syncLock = new object();
-        private static bool deciding = false;
-        public static RoboData currentState = new RoboData();
-        private static int counter = 0;
+        private static string url = "ws://npcompete.io/wsjoin?game=PenTest";
+        private static string devkey = "AustinsLoudlyMagnificentRamen";
+        private static List<NeuralNet> currentPop;
 
+        //for creating the first population
+        private static int numMems = 50;
+        private static int inputSize = 40;
+        private static int numLayers = 5;
+        private static int layerSize = 50;
+        private static int numOutputs = 3;
+        private static double activation = .8;
+
+
+
+        /***********************************************************
+         * 
+         * Progression of this program
+         * 1. Load a population of neural nets, if applicable
+         * 2. Run the neural nets against one another
+         * 3. Save the population of neural nets
+         * 4. Send the neural nets into RoboMash to reproduce
+         * 5. Save this new batch of Neural nets
+         * 6. Repeat
+         * 7. Profit
+         * 
+         * 
+         **********************************************************/
         static void Main(string[] args)
         {
             try
             {
+                LoadPop();
 
-                String url = "ws://npcompete.io/wsjoin?game=PenTest";
-                String devkey = "AustinsLoudlyMagnificentRamen";
 
-                FileStream output = File.Create("testText.txt");
+                RoboGame curGame = new RoboGame(url, devkey, new NeuralNet());
+                curGame.RunGame();
 
-                //int maxLines = 100;
-            
-                var socket = new WebSocket(url);
-
-                Debug.WriteLine("Hello world!");
-
-                
-
-                /************************************************************************
-                 * Event handler for listening for a message
-                 * *********************************************************************/
-                socket.OnMessage += (sender, e) =>
-                {
-                    onMessage(e);
-                };
-
-                //The actual running of the code
-
-                List<_NeuralNet.NeuralNet> result = RoboMash.Mash(RoboMash.GenNeural());
-                Debug.WriteLine(result.Count.ToString());
-                for(int i = 0; i < result.Count; i++)
-                {
-                    Debug.Write(result[i].fitness.ToString() + " ");
-                }
-
-                socket.Connect();
-                socket.Send(devkey);
-
-                Console.ReadLine();
-
-                output.Close();
-
-                socket.Close();
-            }
-
-            catch (Exception e)
+            }catch(Exception e)
             {
                 Debug.WriteLine("DEBUG: " + e.Message);
             }
         }
 
-        static void onMessage(MessageEventArgs e)
+        //helper functions
+        private static void LoadPop()
         {
-            String gameState;
-
-            lock (syncLock)
+            if (!Directory.Exists("gens"))
             {
-                if (deciding)
-                {
-                    return;
-                }
-
-                deciding = true;
+                Directory.CreateDirectory("gens");
+                GenFirstPop();
             }
-            gameState = e.Data;
-
-            //TODO: Make a class to handle the first message sent, containing the player number
-            try
-            {
-                Debug.WriteLine("STATE " + counter + ": " + gameState);
-                currentState = JsonConvert.DeserializeObject<RoboData>(gameState);
-                if (currentState != null)
-                {
-
-                    if (counter % 30 == 0)
-                    {
-                        Debug.WriteLine("CURSTATE: \n" + currentState.PrintData());
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Data);
-                Debug.WriteLine(ex.Message);
-            }
-            finally
-            {
-
-                counter++;
-            }
-
-
-            MakeDecision();
-
-            lock (syncLock)
-            {
-
-                deciding = false;
-            }
+            
         }
 
-        static void MakeDecision()
+        private static void GenFirstPop()
         {
+
+            currentPop = new List<NeuralNet>();
+
+            for(int mem = 0; mem < numMems; mem++)
+            {
+                currentPop[mem] = new NeuralNet(numLayers, layerSize, inputSize, numOutputs, activation);
+            }
+
+
 
         }
 
