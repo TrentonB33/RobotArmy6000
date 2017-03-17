@@ -17,7 +17,7 @@ namespace RoboGeneral6000
     {
         private static readonly object syncLock = new object();
         private static bool deciding = false;
-        public static RoboData currentState;
+        public static RoboData currentState = new RoboData();
         private static int counter = 0;
 
         static void Main(string[] args)
@@ -85,6 +85,8 @@ namespace RoboGeneral6000
                 deciding = true;
             }
             gameState = e.Data;
+
+            //TODO: Make a class to handle the first message sent, containing the player number
             try
             {
                 Debug.WriteLine("STATE " + counter + ": " + gameState);

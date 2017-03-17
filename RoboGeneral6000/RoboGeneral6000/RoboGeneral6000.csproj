@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RoboGame.cs" />
     <Compile Include="_NeuralNet\Layers\Layer.cs" />
     <Compile Include="_NeuralNet\NeuralNet.cs" />
     <Compile Include="_NeuralNet\Layers\AbsLayer.cs" />

@@ -27,6 +27,9 @@ namespace RoboGeneral6000
     {
         //Class variables
         private static double recombineProbability = 0.73;
+        private static double mutationProbability = .02;
+        private static double mutationRange = .10;
+        private static Random randGen = new Random();
 
 
         //The is the publically available function to take a population
@@ -40,6 +43,8 @@ namespace RoboGeneral6000
                 newPop = KillHalf(population);
 
                 newPop = ReproducePop(newPop);
+
+                MutateGenes(newPop);
 
                 return newPop;
 
@@ -58,8 +63,6 @@ namespace RoboGeneral6000
             List<NeuralNet> survivors = new List<NeuralNet>();
             List<int> indexesSaved = new List<int>();
 
-            Random randGen = new Random((int)DateTime.Now.Ticks);
-
             int numToSave = oldPop.Count / 2;
             int maxVal = oldPop.Count * 2;
             int saved = 0;
@@ -71,7 +74,7 @@ namespace RoboGeneral6000
             while (saved < numToSave)
             {
                 temp = (mem + randGen.Next(0, oldPop.Count));
-                Debug.WriteLine(saved.ToString() + " " + temp.ToString());
+                //Debug.WriteLine(saved.ToString() + " " + temp.ToString());
 
                 if (temp > oldPop.Count)
                 {
@@ -99,20 +102,19 @@ namespace RoboGeneral6000
             NeuralNet first = null;
             NeuralNet second = null;
 
-            PrintPop(toReproduce);
+            //PrintPop(toReproduce);
 
             List<double> board = GenBoard(toReproduce);
 
             int seed = (int)DateTime.Now.Ticks;
-            Random randGen = new Random(seed);
-            Debug.WriteLine("Random SEED: " + seed.ToString());
+            //Debug.WriteLine("Random SEED: " + seed.ToString());
             //Random randGen = new Random(100);
             int numRuns = toReproduce.Count;
             double firstRand = 0;
             double secondRand = 0;
 
-            Debug.WriteLine("Board Size: " + board.Count.ToString());
-            Debug.WriteLine("To Reproduce Size: " + toReproduce.Count.ToString());
+            //Debug.WriteLine("Board Size: " + board.Count.ToString());
+            //Debug.WriteLine("To Reproduce Size: " + toReproduce.Count.ToString());
 
             //First, select two members and recombine the member genes if needed
             for (int round = 0; round < numRuns; round++)
@@ -123,8 +125,8 @@ namespace RoboGeneral6000
                 firstRand = randGen.NextDouble();
                 secondRand = randGen.NextDouble();
 
-                Debug.WriteLine("Rooouuunnnndddd: " + round.ToString());
-                Debug.WriteLine("Random Numbers: " + firstRand + " " + secondRand);
+                //Debug.WriteLine("Rooouuunnnndddd: " + round.ToString());
+                //Debug.WriteLine("Random Numbers: " + firstRand + " " + secondRand);
                 
 
                 for (int itr = 0; itr < toReproduce.Count; itr++)
@@ -133,12 +135,12 @@ namespace RoboGeneral6000
                     if (board[itr] < firstRand && firstRand < board[itr + 1])
                     {
                         first = toReproduce[itr];
-                        Debug.WriteLine("First Parent: " + itr.ToString());
+                        //Debug.WriteLine("First Parent: " + itr.ToString());
                     }
                     if(board[itr] < secondRand && secondRand < board[itr + 1])
                     {
                         second = toReproduce[itr];
-                        Debug.WriteLine("Second Parent: " + itr.ToString());
+                       // Debug.WriteLine("Second Parent: " + itr.ToString());
                     }
                     if(first != null && second != null)
                     {
@@ -148,7 +150,7 @@ namespace RoboGeneral6000
                 
                 if (randGen.NextDouble() < recombineProbability)
                 {
-                    RecombineMembers(first, second, newPop, randGen);
+                    RecombineMembers(first, second, newPop);
                 }
                 else
                 {
@@ -157,11 +159,10 @@ namespace RoboGeneral6000
                 }
 
             }
-
             return newPop;
         }
 
-        private static void RecombineMembers(NeuralNet first, NeuralNet second, List<NeuralNet> newPop, Random randGen)
+        private static void RecombineMembers(NeuralNet first, NeuralNet second, List<NeuralNet> newPop)
         {
             NeuralNet clone1 = new NeuralNet(first);
             NeuralNet clone2 = new NeuralNet(second);
@@ -172,9 +173,9 @@ namespace RoboGeneral6000
             int crossIndex = randGen.Next(0, numEdges);
             double tempWeight = 0;
 
-            Debug.WriteLine("Cross Index Value: " + crossIndex.ToString());
-            clone1.PrintNet();
-            clone2.PrintNet();
+            //Debug.WriteLine("Cross Index Value: " + crossIndex.ToString());
+            //clone1.PrintNet();
+            //clone2.PrintNet();
 
             for(int index = crossIndex; index < numEdges; index++)
             {
@@ -183,14 +184,48 @@ namespace RoboGeneral6000
                 clone2.UpdateEdge(index, tempWeight);
             }
 
-            clone1.PrintNet();
-            clone2.PrintNet();
+            //clone1.PrintNet();
+            //clone2.PrintNet();
 
             newPop.Add(clone1);
             newPop.Add(clone2);
         }
 
+        //Function to mutate the genes of the memebers of the new population
+        private static void MutateGenes(List<NeuralNet> toMutate)
+        {
+            int numEdges = toMutate[0].EdgeCount();
+            double newEdge = 0;
+            double edgeChange = 0;
+            double multFactor = 0;
+            int isNegative = 0;
 
+            //for debug
+            int totalMutate = 0;
+
+            for(int member = 0; member < toMutate.Count; member++)
+            {
+                for(int edge = 0; edge < numEdges; edge++)
+                {
+                    if(randGen.NextDouble() < mutationProbability)
+                    {
+                        edgeChange = randGen.NextDouble();
+                        isNegative = randGen.Next(0, 2);
+
+                        Debug.WriteLine("Before Mutate: " + toMutate[member].getEdge(edge).ToString());
+
+                        multFactor = 1 + (Math.Pow(-1, isNegative)*edgeChange*mutationRange);
+                        newEdge = toMutate[member].getEdge(edge) * multFactor;
+                        toMutate[member].UpdateEdge(edge, newEdge);
+
+                        Debug.WriteLine("Factor: " + multFactor.ToString());
+                        Debug.WriteLine("After Mutate: " + toMutate[member].getEdge(edge).ToString());
+
+                        totalMutate++;
+                    }
+                }
+            }            
+        }
 
 
         //Helper Functions
@@ -206,18 +241,18 @@ namespace RoboGeneral6000
                 sum += population[i].fitness;
             }
 
-            Debug.WriteLine("Sum: "+sum.ToString());
+           // Debug.WriteLine("Sum: "+sum.ToString());
             board.Add(0);
             for (int i = 0; i < population.Count; i++)
             {
                 otherSum += (double)population[i].fitness / sum;
                 board.Add(otherSum);
-                Debug.Write(board[i].ToString() + " ");
+                //Debug.Write(board[i].ToString() + " ");
             }
 
-            Debug.Write(board[board.Count-1].ToString() + " ");
-            Debug.WriteLine("");
-            Debug.WriteLine(board.Count.ToString());
+           // Debug.Write(board[board.Count-1].ToString() + " ");
+           // Debug.WriteLine("");
+           // Debug.WriteLine(board.Count.ToString());
 
             return board;
         }
@@ -270,7 +305,4 @@ namespace RoboGeneral6000
         }
 
     }
-
-
-
 }
